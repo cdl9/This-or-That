@@ -6,85 +6,121 @@ const degree =1800;
 
 class Wheel extends React.Component {
 
-	constructor(props) {
+    constructor(props){
         super(props);
-        this.state = {degree: 0, status: null};
-
+        this.state ={degree:0,status:null};
     }
 
 
-
-	handleClick() {
+    handleClick() {
         let newDegree = degree;
         let extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1;
         let totalDegree = newDegree + extraDegree;
-        this.setState({degree: this.state.degree + totalDegree,
-			status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});
+        this.setState( {degree:this.state.degree+totalDegree, });
+        this.setState({status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});
+
+        this.props.callbackFromParent(this.state.status);
+    }
+
+    render(){
+        let styles = {transform: 'rotate('+this.state.degree+'deg)'};
+
+        return(
+            <div className = "game">
+				<div className="wheel" style={styles} onClick={()=>this.handleClick()}>
+
+                    <div className ="section1" >
+                    </div>
+                    <div className ="section2" >
+                    </div>
+                    <div className="head">HEADS</div>
+                    <div className="tail">TAILS</div>
+                    <div className ="spin">
+                        <div className ="innerspin">
+                        </div>
+                    </div>
+                </div>
+                <div className="status">
+					{(this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"}
+
+                    {/*this.state.status*/}
+                </div>
+            </div>
+        );
+    }
+
+
+}
+class Triangle extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        return(<div className="triangle" ></div>);
+
+    }
+}
+
+class Game extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={winner: null, history:[], color:"blue",isHidden:true};
+    }
+    toggleHidden () {
+        this.setState({
+            isHidden: !this.state.isHidden
+        })
+    }
+
+    myCallback =(dataFromChild)=>{
+        const history=this.state.history;
+        this.setState({winner:dataFromChild});
+        this.setState({
+            history:history.concat(this.state.winner),
+
+            color:"blue"
+        });
+
+    }
+    handleClick(){
+        const winner="Heads";
+
 
     }
 
 
+    render(){
 
-	render(){
-		let styles = {transform: 'rotate('+this.state.degree+'deg)'};
+        let styles = {background:"white",};
+        const history=this.state.history;
+        const moves =history.map((step,move)=>{
+            return (
+                <div className="result" style={styles}>{history[this.state.history.length-move]}</div>
+            );
 
-	  return(
-		<div className = "game">
-	  		<div className="wheel" style={styles} onClick={()=>this.handleClick()}>
-			  
-	  	 	  <div className ="section1" ></div>
-	  	 	  <div className ="section2" ></div>
-			  <div className="head">HEADS</div>
-			  <div className="tail">TAILS</div>
-			  <div className ="spin">
-				<div className ="innerspin"></div>
-		  	  </div>
-			</div>
-			<div className = "results">
-                <h1>{(this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"}</h1>
-			</div>
-		</div>
-	  );
-	}
+        });
+
+        return(
+            <div className="game" >
+                {this.state.isHidden && <Wheel onClick={(i) => this.handleClick(i)} callbackFromParent={this.myCallback}/> }
+                {this.state.isHidden && <Triangle/> }
+                {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
+                {/*<div className="square">{moves}</div>*/}
+
+                <button className="heck1" onClick={this.toggleHidden.bind(this)} disabled={this.state.isHidden}>
+                    Wheel
+                </button>
+                <button className="heck2" onClick={this.toggleHidden.bind(this)} disabled={!this.state.isHidden}>
+                    Results
+                </button>
+                {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
+                {!this.state.isHidden &&  (<div className="square">{moves}</div>)}
+            </div>
+
+        );
+    }
 }
 
-
-class Triangle extends React.Component{
-	constructor(props){
-	  super(props);
-	}
-	render(){
-	  return(<div className="triangle" ></div>);
-
-	}
-}
-
-class Results extends React.Component{
-	constructor(props){
-		super(props);
-	}
-	render(){
-		return(<div className="results"><h1></h1></div>);
-	}
-}
-
-class Game extends React.Component {
-	render(){
-	  return(
-		<div className="game" >
-		  <Wheel onClick={(i) => this.handleClick(i)} />
-		  <Triangle/>
-			<Results/>
-		</div>
-	  );
-	} 
-}
-
-ReactDOM.render(
-  <Game />,
-  document.getElementById('root')
+ReactDOM.render(<Game />,
+    document.getElementById('root')
 );
-
-
-
-
