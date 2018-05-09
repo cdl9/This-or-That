@@ -2,37 +2,49 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-
+const degree =1800;
 
 class Wheel extends React.Component {
+
     constructor(props){
         super(props);
-        this.state ={degree:0};
+        this.state ={degree:0,status:null};
     }
+
+
     handleClick() {
-        this.setState( {degree:this.state.degree+10, });
+        let newDegree = degree;
+        let extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1;
+        let totalDegree = newDegree + extraDegree;
+        this.setState( {degree:this.state.degree+totalDegree, status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});
     }
 
     render(){
         let styles = {transform: 'rotate('+this.state.degree+'deg)'};
 
         return(
-            <div className="wheel" style={styles} onClick={()=>this.handleClick()}>
+            <div className = "game">
+                <div className="wheel" style={styles} onClick={()=>this.handleClick()}>
 
-                <div className ="section1" >
-                </div>
-                <div className ="section2" >
-                </div>
-                <div className="head">HEADS</div>
-                <div className="tail">TAILS</div>
-                <div className ="spin">
-                    <div className ="innerspin">
+                    <div className ="section1" >
                     </div>
-
+                    <div className ="section2" >
+                    </div>
+                    <div className="head">HEADS</div>
+                    <div className="tail">TAILS</div>
+                    <div className ="spin">
+                        <div className ="innerspin">
+                        </div>
+                    </div>
+                </div>
+                <div className = "status">
+                    {(this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"}
                 </div>
             </div>
         );
     }
+
+
 }
 class Triangle extends React.Component{
     constructor(props){
@@ -45,41 +57,55 @@ class Triangle extends React.Component{
 }
 
 class Game extends React.Component {
-    render(){
-        return(
-            <div className="game" >
-
-                <ShowHide className="showhide" />
-            </div>
-        );
-    }
-}
-class ShowHide extends React.Component {
-    constructor () {
-        super()
-        this.state = {
-            isHidden: true
-        }
+    constructor(props){
+        super(props);
+        this.state={winner: "Tails", history:[], color:"blue", isHidden: true};
     }
     toggleHidden () {
         this.setState({
             isHidden: !this.state.isHidden
         })
     }
-    render () {
-        return (
-            <div>
+    handleClick(){
+        const winner="Heads";
+        const history=this.state.history;
+
+
+
+        this.setState({
+            history:history.concat(winner),
+            winner:winner,
+            color:"blue"
+        });
+    }
+
+
+    render(){
+
+        let styles = {background:"blue",};
+        const history=this.state.history;
+        const moves =history.map((step,move)=>{
+            return (
+                <div className="result" style={styles}>{history[this.state.history.length-1]}</div>
+            );
+
+        });
+
+        return(
+            <div className="game" >
                 {this.state.isHidden && <Wheel onClick={(i) => this.handleClick(i)} /> }
-                {!this.state.isHidden && <Triangle/>}
+                {this.state.isHidden && <Triangle/> }
                 <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={this.state.isHidden}>
-                   Click for Wheel
+                    Click for Wheel
                 </button>
                 <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={!this.state.isHidden}>
-                    Click for Triangle
+                    Click for History
                 </button>
-
+                <div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>
+                {!this.state.isHidden && <moves className="square"/>}
             </div>
-        )
+
+        );
     }
 }
 
