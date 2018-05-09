@@ -7,6 +7,24 @@
     margin-left: auto;
     top: 20px;
 }
+.title{
+    position: relative;
+    background-color: #27c5ef;
+    border: none;
+    color: white;
+    padding: 20px 0px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 45px;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-weight: bold;
+    width:608px;
+    top: -350px;
+    left: calc(50% - 300px) ;
+    box-shadow: 5px 5px 6px rgba(0,0,0,0.38);
+}
 .heck1{
     position: relative;
     background-color: #27c5ef;
@@ -22,8 +40,16 @@
     font-weight: bold;
     top: 100px;
     left: 120px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.38);
 }
-
+.heck1:enabled{
+	background-color:#4b69c8;
+	box-shadow: 4px 4px 6px rgba(0,0,0,0.38);
+}
+.heck2:disabled{
+	background-color:#27c5ef;
+	box-shadow: 4px 4px 6px rgba(0,0,0,0.38);
+}
 .heck2{
     position: relative;
     background-color: #4b69c8;
@@ -39,6 +65,7 @@
     font-weight: bold;
     top: 100px;
     left: 120px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.38);
 }
 
 body {
@@ -58,10 +85,13 @@ ol, ul {
 }
 
 .status {
-    margin-bottom: 10px;
+    position:relative;
+    top:500px;
+    margin-top: 130px;
     color: white;
     font-weight: bold;
     border-color: black;
+    display:block;
 }
 
 .head{
@@ -96,8 +126,8 @@ ol, ul {
     font-weight: bold;
     line-height: 60px;
     height: 400px;
-    top: 2%;
-    left: calc(50% - 140px);
+    top: 17%;
+    left: calc(50% - 127px);
     position:absolute;
     padding: 0;
     text-align: center;
@@ -123,7 +153,9 @@ ol, ul {
 .game {
 
     display: block;
-    flex-direction: row;
+    
+    top: 500px;
+
 }
 
 .game-info {
@@ -150,7 +182,7 @@ ol, ul {
 }
 
 .wheel{
-    top: 35px;
+    top: 175px;
     left: calc(50% - 125px);
     width:250px;
     height:250px;
@@ -233,7 +265,7 @@ ol, ul {
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     border-top: 50px groove #91A8D0;
-    top:20px;
+    top:160px;
     left: calc(50% - 11px);
     margin:auto;
     overflow:hidden;
