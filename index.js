@@ -10,13 +10,16 @@ class Wheel extends React.Component {
 	  super(props);
 	  this.state ={degree:0,status:null};
 	}
-
+	
 
 	handleClick() {
 		let newDegree = degree;
         	let extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1;
         	let totalDegree = newDegree + extraDegree;
-		this.setState( {degree:this.state.degree+totalDegree, status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});				
+		this.setState( {degree:this.state.degree+totalDegree, });	
+		this.setState({status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});
+		
+		this.props.callbackFromParent(this.state.status);			
 	}	
 
 	render(){
@@ -37,8 +40,10 @@ class Wheel extends React.Component {
 		  		</div>
 		  	  </div>
 			</div>
-			<div className = "status">
+			<div className="status">
                 		{(this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"}
+				
+				{/*this.state.status*/}
 			</div>
 		</div>
 	  );
@@ -59,19 +64,28 @@ class Triangle extends React.Component{
 class Game extends React.Component {
 	constructor(props){
 	   super(props);
-	   this.state={winner: "Tails", history:[], color:"blue",};
+	   this.state={winner: null, history:[], color:"blue",isHidden:true};
+	}
+	toggleHidden () {
+        	this.setState({
+            	isHidden: !this.state.isHidden
+        	})
+    	}
+
+	myCallback =(dataFromChild)=>{
+		const history=this.state.history;
+		this.setState({winner:dataFromChild});
+		this.setState({
+			history:history.concat(this.state.winner),
+			
+			color:"blue"
+		});
+
 	}
 	handleClick(){
 		const winner="Heads";
-		const history=this.state.history;
-
 		
-
-		this.setState({
-			history:history.concat(winner),
-			winner:winner,
-			color:"blue"
-		});
+		
 	}
 		
 	
@@ -81,17 +95,26 @@ class Game extends React.Component {
 	  const history=this.state.history;
 	  const moves =history.map((step,move)=>{
 			return (
-				    <div className="result" style={styles}>{history[this.state.history.length-1]}</div>
+				    <div className="result" style={styles}>{history[this.state.history.length-move]}</div>
 			);
 
 		});
 
 	  return(
 		<div className="game" >
-		  <Wheel/>
-		  <Triangle/>
+		  {this.state.isHidden && <Wheel onClick={(i) => this.handleClick(i)} callbackFromParent={this.myCallback}/> }
+		  {this.state.isHidden && <Triangle/> }
 		  {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
-		   {/*<div className="square">{moves}</div>	*/}
+		  {/*<div className="square">{moves}</div>*/}
+
+		  <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={this.state.isHidden}>
+                    Click for Wheel
+                  </button>
+                  <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={!this.state.isHidden}>
+                    Click for History
+                  </button>
+                  {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
+                  {!this.state.isHidden &&  (<div className="square">{moves}</div>)}
 		</div>	
 		
 	  );
