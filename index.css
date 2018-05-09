@@ -22,8 +22,16 @@
     font-weight: bold;
     top: 100px;
     left: 120px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.38);
 }
-
+.heck1:disabled{
+	background-color:#4b69c8;
+	box-shadow: 4px 4px 6px rgba(0,0,0,0.38);
+}
+.heck2:enabled{
+	background-color:#27c5ef;
+	box-shadow: 4px 4px 6px rgba(0,0,0,0.38);
+}
 .heck2{
     position: relative;
     background-color: #4b69c8;
@@ -39,6 +47,7 @@
     font-weight: bold;
     top: 100px;
     left: 120px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.38);
 }
 
 body {
