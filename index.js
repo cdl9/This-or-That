@@ -2,22 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-
+const degree =1800;
 
 class Wheel extends React.Component {
 	
 	constructor(props){
 	  super(props);
-	  this.state ={degree:0};
+	  this.state ={degree:0,status:null};
 	}
+
+
 	handleClick() {
-		this.setState( {degree:this.state.degree+10, });				
+		let newDegree = degree;
+        	let extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1;
+        	let totalDegree = newDegree + extraDegree;
+		this.setState( {degree:this.state.degree+totalDegree, status: (this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"});				
 	}	
 
 	render(){
 	  let styles = {transform: 'rotate('+this.state.degree+'deg)'};
 	
 	  return(	
+		<div className = "game">
 			<div className="wheel" style={styles} onClick={()=>this.handleClick()}> 
 			  
 	  	 	  <div className ="section1" >
@@ -31,8 +37,14 @@ class Wheel extends React.Component {
 		  		</div>
 		  	  </div>
 			</div>
+			<div className = "status">
+                		{(this.state.degree/360 - Math.trunc(this.state.degree/360)) >= .50 ? "TAILS":"HEADS"}
+			</div>
+		</div>
 	  );
 	}
+
+	
 }
 class Triangle extends React.Component{
 	constructor(props){
@@ -78,8 +90,8 @@ class Game extends React.Component {
 		<div className="game" >
 		  <Wheel/>
 		  <Triangle/>
-		  <div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>
-		  <div className="square">{moves}</div>		
+		  {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
+		   {/*<div className="square">{moves}</div>	*/}
 		</div>	
 		
 	  );
