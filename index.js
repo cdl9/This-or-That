@@ -95,7 +95,7 @@ class Game extends React.Component {
 	  const history=this.state.history;
 	  const moves =history.map((step,move)=>{
 			return (
-				    <div className="result" style={styles}>{history[this.state.history.length-move]}</div>
+				    <div className="result" >{history[this.state.history.length-move]}</div>
 			);
 
 		});
@@ -107,10 +107,10 @@ class Game extends React.Component {
 		  {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
 		  {/*<div className="square">{moves}</div>*/}
 
-		  <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={this.state.isHidden}>
+		  <button className="heck1" onClick={this.toggleHidden.bind(this)} disabled={this.state.isHidden}>
                     Click for Wheel
                   </button>
-                  <button className="heck" onClick={this.toggleHidden.bind(this)} disabled={!this.state.isHidden}>
+                  <button className="heck2" onClick={this.toggleHidden.bind(this)} disabled={!this.state.isHidden}>
                     Click for History
                   </button>
                   {/*<div className="status" onClick={() => this.handleClick()} >{this.state.winner}</div>*/}
@@ -125,3 +125,4 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
